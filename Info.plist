@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Author</key>
-	<string>Will Farrington</string>
+	<string>Will Farrington and Mike Skalnik</string>
 	<key>CFBundleDisplayName</key>
 	<string>ScoutAlerts</string>
 	<key>CFBundleIdentifier</key>
@@ -26,7 +26,7 @@
 				<key>Identifier</key>
 				<string>scout-alerts</string>
 				<key>Image</key>
-				<string>example.png</string>
+				<string>head.png</string>
 				<key>Label</key>
 				<string>Scout Alerts</string>
 				<key>Palette Label</key>
