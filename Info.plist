@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>Will Farrington</string>
+	<key>CFBundleDisplayName</key>
+	<string>ScoutAlerts</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.wfarr.scoutalerts</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.1</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>Chrome</key>
+	<dict>
+		<key>Global Page</key>
+		<string>global.html</string>
+		<key>Toolbar Items</key>
+		<array>
+			<dict>
+				<key>Command</key>
+				<string>show-scout-alerts</string>
+				<key>Identifier</key>
+				<string>scout-alerts</string>
+				<key>Image</key>
+				<string>example.png</string>
+				<key>Label</key>
+				<string>Scout Alerts</string>
+				<key>Palette Label</key>
+				<string>Scout Alerts</string>
+				<key>Tool Tip</key>
+				<string>View active Scout alerts.</string>
+			</dict>
+		</array>
+	</dict>
+	<key>Content</key>
+	<dict>
+		<key>Scripts</key>
+		<dict/>
+	</dict>
+	<key>Description</key>
+	<string>Displays Scout alerts in the toolbar via an icon</string>
+	<key>ExtensionInfoDictionaryVersion</key>
+	<string>1.0</string>
+	<key>Permissions</key>
+	<dict>
+		<key>Website Access</key>
+		<dict>
+			<key>Include Secure Pages</key>
+			<true/>
+			<key>Level</key>
+			<string>All</string>
+		</dict>
+	</dict>
+	<key>Website</key>
+	<string>http://willfarrington.com/scout_alerts_plugin</string>
+</dict>
+</plist>

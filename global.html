@@ -1,0 +1,147 @@
+<!--
+ Copyright (c) 2010 Will Farrington, Mike Skalnik
+
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation
+ files (the "Software"), to deal in the Software without
+ restriction, including without limitation the rights to use,
+ copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the
+ Software is furnished to do so, subject to the following
+ conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ OTHER DEALINGS IN THE SOFTWARE.
+
+========================================================
+
+This extension adds the ability to casually monitor scout
+alerts in the toolbar. Currently, it displays the total
+number of active alerts in Scout.
+-->
+
+<!DOCTYPE HTML>
+<script>
+
+  // Global variables for Scout
+  var scout_account  = safari.extension.settings.scoutAcount;
+  var scout_user     = safari.extension.settings.scoutUser;
+  var scout_password = safari.extension.settings.scoutPassword;
+  var scout_alerts   = safari.extension.settings.scoutAlerts;
+  var timer          = safari.extension.settings.scoutRefreshTimer;
+
+  // The XMLHttpRequest object used for fetching the information from Scout asynchronously
+  var xhr;
+
+  // Set an interval to refresh the toolbar item
+  // setInterval returns an id used for clearing that interval
+  var timerId = setInterval(updateScoutAlerts, timer * 1000);
+
+  // Register for the validate and command events
+  safari.application.addEventListener("validate", performValidation, false);
+  safari.application.addEventListener("command", performCommand, false);
+  safari.application.addEventListener("change", performChange, false);
+
+  function performValidation(event) {
+    switch (event.command) {
+      case "show-scout-alerts":
+        // Set the badge of the target
+        scout_alerts = safari.extension.settings.scoutAlerts;
+        if ("badge" in event.target) {
+          event.target.badge = scout_alerts;
+        }
+        break;
+    }
+  }
+
+  function performCommand(event) {
+    switch (event.command) {
+      case "show-scout-alerts":
+        // TODO: show a drop-down menu with scout alerts
+        scout_account = safari.extension.settings.scoutAccount;
+        if (scout_account) {
+          safari.application.activeBrowserWindow.openTab("foreground").url = 'http://scoutapp.com/' + scout_account + '/';
+          } else {
+          alert("You need to set a scout account in the settings window!");
+        }
+        break;
+    }
+  }
+
+  function performChange(event) {
+    switch (event.command) {
+      case "show-scout-alerts":
+        // If the settings for this plugin have been updated, update them
+        scout_account  = safari.extension.settings.scoutAcount;
+        scout_user     = safari.extension.settings.scoutUser;
+        scout_password = safari.extension.settings.scoutPassword;
+        scout_alerts   = safari.extension.settings.scoutAlerts;
+        timer          = safari.extension.settings.scoutRefreshTimer;
+        break;
+    }
+  }
+
+  function validateToolbarItems() {
+    // Iterate over all the toolbar items and tell them to validate
+    var toolbarItems = safari.extension.toolbarItems;
+    for (var i = 0; i < toolbarItems.length; ++i) {
+      if (toolbarItems[i].identifier !== "scout-alerts") {
+        continue;
+      }
+
+      // Dispatches a validate event to update items
+      toolbarItems[i].validate();
+    }
+  }
+
+  function updateScoutAlerts() {
+    // Update the Scout info
+    scout_account  = safari.extension.settings.scoutAccount;
+    scout_user     = safari.extension.settings.scoutUser;
+    scout_password = safari.extension.settings.scoutPassword;
+
+    // If the value of the timer changes, then update it and set the new interval
+    if (timer != safari.extension.settings.scoutRefreshTimer) {
+      timer = safari.extension.settings.scoutRefreshTimer;
+      clearInterval(timerId);
+      timerId = setInterval(updateScoutAlerts, timer * 1000);
+    }
+
+    // If we have auth info, make the request
+    if (scout_account && scout_user && scout_password) {
+      xhr = new XMLHttpRequest();
+      // currently we have to rely on cookies — no sending user/pass as direct http auth :(
+      xhr.open('GET', 'https://scoutapp.com/' + scout_account + '/activities.json', true);
+      xhr.withCredentials = "true";
+      xhr.onreadystatechange = handleScoutRequest;
+      xhr.send();
+    }
+  }
+
+  function handleScoutRequest() {
+    // Get some JSON to work with
+    if ((xhr.readyState == 4) && (xhr.statusText == "OK")) {
+      activity = JSON.parse(xhr.responseText);
+      var alerts_count = 0;
+      for (a in activity) {
+        if ((activity[a].alert) && (activity[a].alert.active)) {
+          alerts_count++;
+        }
+      }
+      // Update the scoutAlerts setting
+      safari.extension.settings.scoutAlerts = alerts_count;
+
+      // Validate the toolbar items
+      validateToolbarItems();
+    }
+  }
+</script>
