@@ -108,13 +108,9 @@ number of active alerts in Scout.
     scout_account  = safari.extension.settings.scoutAccount;
     scout_user     = safari.extension.settings.scoutUser;
     scout_password = safari.extension.settings.scoutPassword;
-
-    // If the value of the timer changes, then update it and set the new interval
-    if (timer != safari.extension.settings.scoutRefreshTimer) {
-      timer = safari.extension.settings.scoutRefreshTimer;
-      clearInterval(timerId);
-      timerId = setInterval(updateScoutAlerts, timer * 1000);
-    }
+    timer          = safari.extension.settings.scoutRefreshTimer;
+    clearInterval(timerId);
+    timerId = setInterval(updateScoutAlerts, timer * 1000);
 
     // If we have auth info, make the request
     if (scout_account && scout_user && scout_password) {
