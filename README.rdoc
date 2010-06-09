@@ -1,0 +1,21 @@
+== Installing
+
+The latest stable release is available on the downloads page.
+
+== Building Your Own
+
+* Clone this repository.
+* Open the Extension Builder in Safari
+* Click the "+" button, and add an extension.
+* Select the directory the clone is in.
+* Develop!
+
+== Note on Patches/Pull Requests
+
+* Fork the project.
+* Make your feature addition or bug fix.
+* Send me a pull request. Bonus points for topic branches.
+
+== Copyright
+
+Copyright (c) 2010 Will Farrington, Mike Skalnik.
