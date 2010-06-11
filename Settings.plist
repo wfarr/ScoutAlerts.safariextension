@@ -56,9 +56,9 @@
 		<key>StepValue</key>
 		<real>15</real>
 		<key>Title</key>
-		<string>Refresh Frequency</string>
+		<string>Refresh Frequency (Seconds)</string>
 		<key>Type</key>
-		<string>Slider</string>
+		<string>TextField</string>
 	</dict>
 </array>
 </plist>
