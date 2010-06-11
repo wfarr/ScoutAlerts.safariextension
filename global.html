@@ -31,7 +31,6 @@ number of active alerts in Scout.
 
 <!DOCTYPE HTML>
 <script>
-
   // Global variables for Scout
   var scout_account  = safari.extension.settings.scoutAcount;
   var scout_user     = safari.extension.settings.scoutUser;
@@ -115,8 +114,7 @@ number of active alerts in Scout.
     // If we have auth info, make the request
     if (scout_account && scout_user && scout_password) {
       xhr = new XMLHttpRequest();
-      // currently we have to rely on cookies — no sending user/pass as direct http auth :(
-      xhr.open('GET', 'https://scoutapp.com/' + scout_account + '/activities.json', true);
+      xhr.open('GET', 'https://' + scout_user.replace("@", "%25") + ':' + scout_password + '@scoutapp.com/' + scout_account + '/activities.json', true);
       xhr.withCredentials = "true";
       xhr.onreadystatechange = handleScoutRequest;
       xhr.send();
