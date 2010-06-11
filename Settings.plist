@@ -60,5 +60,11 @@
 		<key>Type</key>
 		<string>TextField</string>
 	</dict>
+	<dict>
+		<key>DefaultValue</key>
+		<real>1</real>
+		<key>Key</key>
+		<string>scoutFirstRun</string>
+	</dict>
 </array>
 </plist>
