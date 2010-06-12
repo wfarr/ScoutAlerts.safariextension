@@ -54,7 +54,6 @@ number of active alerts in Scout.
   // If the user is missing all settings, prompt them with the first run page
   if (scout_firstrun == 1) {
     safari.extension.settings.scoutFirstRun = 0;
-    scout_firstrun = 0;
     safari.application.activeBrowserWindow.openTab("foreground").url = safari.extension.baseURI + "firstrun.html";
   }
 
